@@ -1,6 +1,6 @@
 local edn = require 'edn'
 
-describe("EDN String Parser", function()
+describe("EDN Decode", function()
     
     it("should parse simple strings", function()
         local result = edn.decode('"Hello World"')
