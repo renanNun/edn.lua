@@ -22,10 +22,7 @@ jobs:
       with:
         lua-version: ${{ matrix.lua-version }}
 
-    - name: build
-      run: |
-        luarocks install busted
-        luarocks make
+    - uses: leafo/gh-actions-luarocks@v4
 
     - name: Instalal Busted (test runner)
       run: |
