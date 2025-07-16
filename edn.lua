@@ -62,6 +62,37 @@ local function take_symbol (cr)
   return table.concat(chars)
 end
 
+local function take_number(cr)
+  local chars = {}
+  local c = cr.current()
+
+  if c == '-' then
+    table.insert(chars, c)
+    cr.advance()
+    c = cr.current()
+  end
+
+  while c and string.match(c, "%d") do
+    table.insert(chars, c)
+    cr.advance()
+    c = cr.current()
+  end
+
+ if c == '.' then
+    table.insert(chars, c)
+    cr.advance()
+    c = cr.current()
+        
+    while c and string.match(c, "%d") do
+      table.insert(chars, c)
+      cr.advance()
+      c = cr.current()
+    end
+  end
+
+  return table.concat(chars)
+end
+
 local function read_token(cr)
   local c = cr.current()
   local n = cr.peek(1)
@@ -88,7 +119,7 @@ local function read_token(cr)
     local kw = take_symbol(cr)
     return {"keyword", kw, from, cr.pos()}
   elseif (c == "-" and n ~= nil and string.match(n, "%d")) or string.match(c, "%d") then
-    local num = take_symbol(cr)
+    local num_str = take_number(cr) 
     return {"num", tonumber(num), from, cr.pos()}
   elseif string.match(c, "%s") or c == "," then
     while c ~= nil and (string.match(c, "%s") or c == ",") do
